@@ -1,5 +1,5 @@
 import { supabaseClient } from '../lib/supabaseClient';
-import { Todo } from '../types/Todo';
+import type { Todo } from '../types/Todo';
 
 const supabase = supabaseClient;
 
