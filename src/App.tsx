@@ -4,6 +4,8 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { TodoApi } from './utils/todoApi'
 import type { Todo } from './types/Todo'
+import { supabaseClient } from './lib/supabaseClient'
+import Login from './Login'
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([])
@@ -11,7 +13,22 @@ function App() {
   const [input, setInput] = useState('')
   const [adding, setAdding] = useState(false)
   const [selectedId, setSelectedId] = useState<number | null>(null)
+  const [user, setUser] = useState<any>(null)
   const todoApi = new TodoApi()
+
+  // ユーザー認証状態の取得
+  useEffect(() => {
+    supabaseClient.auth.getUser().then(({ data }) => {
+      setUser(data.user)
+    })
+    // 認証状態の変化を監視
+    const { data: listener } = supabaseClient.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+    return () => {
+      listener.subscription.unsubscribe()
+    }
+  }, [])
 
   const fetchTodos = async () => {
     try {
@@ -53,6 +70,10 @@ function App() {
     } catch (e) {
       alert('削除に失敗しました')
     }
+  }
+
+  if (!user) {
+    return <Login />
   }
 
   return (
