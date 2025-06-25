@@ -10,6 +10,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [input, setInput] = useState('')
   const [adding, setAdding] = useState(false)
+  const [selectedId, setSelectedId] = useState<number | null>(null)
   const todoApi = new TodoApi()
 
   const fetchTodos = async () => {
@@ -39,6 +40,18 @@ function App() {
       alert('タスクの追加に失敗しました')
     } finally {
       setAdding(false)
+    }
+  }
+
+  const handleDelete = async () => {
+    if (selectedId === null) return
+    if (!window.confirm('本当に削除しますか？')) return
+    try {
+      await todoApi.deleteItem(selectedId)
+      setSelectedId(null)
+      await fetchTodos()
+    } catch (e) {
+      alert('削除に失敗しました')
     }
   }
 
@@ -73,13 +86,32 @@ function App() {
         ) : todos.length === 0 ? (
           <p>タスクがありません</p>
         ) : (
-          <ul style={{ textAlign: 'left' }}>
-            {todos.map((todo) => (
-              <li key={todo.id}>
-                {todo.text} {todo.done ? '✅' : ''}
-              </li>
-            ))}
-          </ul>
+          <form>
+            <ul style={{ textAlign: 'left' }}>
+              {todos.map((todo) => (
+                <li key={todo.id}>
+                  <label>
+                    <input
+                      type="radio"
+                      name="selectedTodo"
+                      value={todo.id}
+                      checked={selectedId === todo.id}
+                      onChange={() => setSelectedId(todo.id)}
+                    />
+                    {todo.text} {todo.done ? '✅' : ''}
+                  </label>
+                </li>
+              ))}
+            </ul>
+            <button
+              type="button"
+              onClick={handleDelete}
+              disabled={selectedId === null}
+              style={{ marginTop: '1em' }}
+            >
+              削除
+            </button>
+          </form>
         )}
       </div>
       <p className="read-the-docs">
