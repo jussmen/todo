@@ -155,74 +155,93 @@ function App() {
 
   return (
     <>
-      {/* 上部ナビゲーションメニュー */}
-      <div style={{ 
-        backgroundColor: '#f5f5f5', 
-        padding: '1em',
+      {/* 上部メニューバー */}
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        background: '#fff',
         borderBottom: '1px solid #ddd',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
+        zIndex: 1000,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.03)'
       }}>
-        <nav>
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', gap: '1em' }}>
-            <li>
-              <button 
-                onClick={() => setCurrentPage('home')}
-                style={{ 
-                  padding: '0.8em 1.5em',
-                  backgroundColor: currentPage === 'home' ? '#646cff' : 'transparent',
-                  color: currentPage === 'home' ? 'white' : 'inherit',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer'
-                }}
-              >
-                ホーム
-              </button>
-            </li>
-            <li>
-              <button 
-                onClick={() => setCurrentPage('salary')}
-                style={{ 
-                  padding: '0.8em 1.5em',
-                  backgroundColor: currentPage === 'salary' ? '#646cff' : 'transparent',
-                  color: currentPage === 'salary' ? 'white' : 'inherit',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer'
-                }}
-              >
-                給与収入
-              </button>
-            </li>
-            <li>
-              <button 
-                onClick={() => setCurrentPage('property')}
-                style={{ 
-                  padding: '0.8em 1.5em',
-                  backgroundColor: currentPage === 'property' ? '#646cff' : 'transparent',
-                  color: currentPage === 'property' ? 'white' : 'inherit',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer'
-                }}
-              >
-                所有物件
-              </button>
-            </li>
-          </ul>
-        </nav>
-        <div>
-          <span>ようこそ、{user.email}さん</span>
-          <button onClick={handleLogout} style={{ marginLeft: '1em', fontSize: '0.8em' }}>
-            ログアウト
-          </button>
+        <div style={{
+          maxWidth: '80vw',
+          margin: '0 auto',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '1em 0',
+        }}>
+          {/* メニュー項目 */}
+          <nav>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', gap: '1em' }}>
+              <li>
+                <button 
+                  onClick={() => setCurrentPage('home')}
+                  style={{ 
+                    padding: '0.8em 1.5em',
+                    backgroundColor: currentPage === 'home' ? '#646cff' : 'transparent',
+                    color: currentPage === 'home' ? 'white' : 'inherit',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  ホーム
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => setCurrentPage('salary')}
+                  style={{ 
+                    padding: '0.8em 1.5em',
+                    backgroundColor: currentPage === 'salary' ? '#646cff' : 'transparent',
+                    color: currentPage === 'salary' ? 'white' : 'inherit',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  給与収入
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => setCurrentPage('property')}
+                  style={{ 
+                    padding: '0.8em 1.5em',
+                    backgroundColor: currentPage === 'property' ? '#646cff' : 'transparent',
+                    color: currentPage === 'property' ? 'white' : 'inherit',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  所有物件
+                </button>
+              </li>
+            </ul>
+          </nav>
+          <div>
+            <span>ようこそ、{user.email}さん</span>
+            <button onClick={handleLogout} style={{ marginLeft: '1em', fontSize: '0.8em' }}>
+              ログアウト
+            </button>
+          </div>
         </div>
       </div>
-      
       {/* メインコンテンツ */}
-      <div style={{ padding: '2em' }}>
+      <div style={{
+        background: '#fff',
+        maxWidth: '80vw',
+        margin: '6em auto 0 auto',
+        padding: '2em',
+        minHeight: '80vh',
+        boxShadow: '0 2px 16px rgba(0,0,0,0.04)',
+        borderRadius: '8px',
+      }}>
         <div>
           <a href="https://vite.dev" target="_blank">
             <img src={viteLogo} className="logo" alt="Vite logo" />
