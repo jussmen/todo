@@ -105,7 +105,7 @@ function App() {
             onChange={e => setInput(e.target.value)}
             placeholder="新しいタスクを入力"
             disabled={adding}
-            style={{ marginRight: '0.5em', padding: '0.5em', width: '60%' }}
+            style={{ marginRight: '0.5em', padding: '0.8em', width: '80%', fontSize: '1em' }}
           />
           <button type="submit" disabled={adding || !input.trim()}>
             {adding ? '追加中...' : '追加'}
