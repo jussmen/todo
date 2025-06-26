@@ -17,7 +17,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'salary' | 'property'>('home')
   const todoApi = new TodoApi()
 
-  // ユーザー認証状態の取得
+  // ユーザー認証状態の取得 - hoge
   useEffect(() => {
     supabaseClient.auth.getUser().then(({ data }) => {
       setUser(data.user)
