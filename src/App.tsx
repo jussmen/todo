@@ -154,29 +154,23 @@ function App() {
   }
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
-      {/* サイドメニュー */}
+    <>
+      {/* 上部ナビゲーションメニュー */}
       <div style={{ 
-        width: '250px', 
         backgroundColor: '#f5f5f5', 
         padding: '1em',
-        borderRight: '1px solid #ddd'
+        borderBottom: '1px solid #ddd',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
       }}>
-        <div style={{ marginBottom: '2em' }}>
-          <span>ようこそ、{user.email}さん</span>
-          <button onClick={handleLogout} style={{ marginLeft: '1em', fontSize: '0.8em' }}>
-            ログアウト
-          </button>
-        </div>
         <nav>
-          <ul style={{ listStyle: 'none', padding: 0 }}>
-            <li style={{ marginBottom: '0.5em' }}>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', gap: '1em' }}>
+            <li>
               <button 
                 onClick={() => setCurrentPage('home')}
                 style={{ 
-                  width: '100%', 
-                  textAlign: 'left', 
-                  padding: '0.8em',
+                  padding: '0.8em 1.5em',
                   backgroundColor: currentPage === 'home' ? '#646cff' : 'transparent',
                   color: currentPage === 'home' ? 'white' : 'inherit',
                   border: 'none',
@@ -187,13 +181,11 @@ function App() {
                 ホーム
               </button>
             </li>
-            <li style={{ marginBottom: '0.5em' }}>
+            <li>
               <button 
                 onClick={() => setCurrentPage('salary')}
                 style={{ 
-                  width: '100%', 
-                  textAlign: 'left', 
-                  padding: '0.8em',
+                  padding: '0.8em 1.5em',
                   backgroundColor: currentPage === 'salary' ? '#646cff' : 'transparent',
                   color: currentPage === 'salary' ? 'white' : 'inherit',
                   border: 'none',
@@ -204,13 +196,11 @@ function App() {
                 給与収入
               </button>
             </li>
-            <li style={{ marginBottom: '0.5em' }}>
+            <li>
               <button 
                 onClick={() => setCurrentPage('property')}
                 style={{ 
-                  width: '100%', 
-                  textAlign: 'left', 
-                  padding: '0.8em',
+                  padding: '0.8em 1.5em',
                   backgroundColor: currentPage === 'property' ? '#646cff' : 'transparent',
                   color: currentPage === 'property' ? 'white' : 'inherit',
                   border: 'none',
@@ -223,10 +213,16 @@ function App() {
             </li>
           </ul>
         </nav>
+        <div>
+          <span>ようこそ、{user.email}さん</span>
+          <button onClick={handleLogout} style={{ marginLeft: '1em', fontSize: '0.8em' }}>
+            ログアウト
+          </button>
+        </div>
       </div>
       
       {/* メインコンテンツ */}
-      <div style={{ flex: 1, padding: '2em' }}>
+      <div style={{ padding: '2em' }}>
         <div>
           <a href="https://vite.dev" target="_blank">
             <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -241,7 +237,7 @@ function App() {
           Click on the Vite and React logos to learn more
         </p>
       </div>
-    </div>
+    </>
   )
 }
 
