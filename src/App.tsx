@@ -233,7 +233,7 @@ function App() {
       {/* メインコンテンツ */}
       <div style={{
         background: '#fff',
-        maxWidth: '80vw',
+        maxWidth: '70vw',
         margin: '6em auto 0 auto',
         padding: '2em',
         minHeight: '80vh',
