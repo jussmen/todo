@@ -14,6 +14,7 @@ function App() {
   const [adding, setAdding] = useState(false)
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [user, setUser] = useState<any>(null)
+  const [currentPage, setCurrentPage] = useState<'home' | 'salary' | 'property'>('home')
   const todoApi = new TodoApi()
 
   // ユーザー認証状態の取得
@@ -76,79 +77,171 @@ function App() {
     await supabaseClient.auth.signOut()
   }
 
+  const renderContent = () => {
+    switch (currentPage) {
+      case 'home':
+        return (
+          <div className="card">
+            <form onSubmit={handleAdd} style={{ marginBottom: '1em' }}>
+              <input
+                type="text"
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                placeholder="新しいタスクを入力"
+                disabled={adding}
+                style={{ marginRight: '0.5em', padding: '0.8em', width: '80%', fontSize: '1em' }}
+              />
+              <button type="submit" disabled={adding || !input.trim()}>
+                {adding ? '追加中...' : '追加'}
+              </button>
+            </form>
+            <h2>タスク一覧</h2>
+            {loading ? (
+              <p>読み込み中...</p>
+            ) : todos.length === 0 ? (
+              <p>タスクがありません</p>
+            ) : (
+              <form>
+                <ul style={{ textAlign: 'left' }}>
+                  {todos.map((todo) => (
+                    <li key={todo.id}>
+                      <label>
+                        <input
+                          type="radio"
+                          name="selectedTodo"
+                          value={todo.id}
+                          checked={selectedId === todo.id}
+                          onChange={() => setSelectedId(todo.id)}
+                        />
+                        {todo.text} {todo.done ? '✅' : ''}
+                      </label>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  disabled={selectedId === null}
+                  style={{ marginTop: '1em' }}
+                >
+                  削除
+                </button>
+              </form>
+            )}
+          </div>
+        )
+      case 'salary':
+        return (
+          <div className="card">
+            <h2>給与収入</h2>
+            <p>給与収入の管理機能は準備中です。</p>
+          </div>
+        )
+      case 'property':
+        return (
+          <div className="card">
+            <h2>所有物件</h2>
+            <p>所有物件の管理機能は準備中です。</p>
+          </div>
+        )
+      default:
+        return null
+    }
+  }
+
   if (!user) {
     return <Login />
   }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div style={{ marginBottom: '1em' }}>
-        <span>ようこそ、{user.email}さん</span>
-        <button onClick={handleLogout} style={{ marginLeft: '1em' }}>
-          ログアウト
-        </button>
-      </div>
-      <div className="card">
-        <form onSubmit={handleAdd} style={{ marginBottom: '1em' }}>
-          <input
-            type="text"
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            placeholder="新しいタスクを入力"
-            disabled={adding}
-            style={{ marginRight: '0.5em', padding: '0.8em', width: '80%', fontSize: '1em' }}
-          />
-          <button type="submit" disabled={adding || !input.trim()}>
-            {adding ? '追加中...' : '追加'}
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
+      {/* サイドメニュー */}
+      <div style={{ 
+        width: '250px', 
+        backgroundColor: '#f5f5f5', 
+        padding: '1em',
+        borderRight: '1px solid #ddd'
+      }}>
+        <div style={{ marginBottom: '2em' }}>
+          <span>ようこそ、{user.email}さん</span>
+          <button onClick={handleLogout} style={{ marginLeft: '1em', fontSize: '0.8em' }}>
+            ログアウト
           </button>
-        </form>
-        <h2>タスク一覧</h2>
-        {loading ? (
-          <p>読み込み中...</p>
-        ) : todos.length === 0 ? (
-          <p>タスクがありません</p>
-        ) : (
-          <form>
-            <ul style={{ textAlign: 'left' }}>
-              {todos.map((todo) => (
-                <li key={todo.id}>
-                  <label>
-                    <input
-                      type="radio"
-                      name="selectedTodo"
-                      value={todo.id}
-                      checked={selectedId === todo.id}
-                      onChange={() => setSelectedId(todo.id)}
-                    />
-                    {todo.text} {todo.done ? '✅' : ''}
-                  </label>
-                </li>
-              ))}
-            </ul>
-            <button
-              type="button"
-              onClick={handleDelete}
-              disabled={selectedId === null}
-              style={{ marginTop: '1em' }}
-            >
-              削除
-            </button>
-          </form>
-        )}
+        </div>
+        <nav>
+          <ul style={{ listStyle: 'none', padding: 0 }}>
+            <li style={{ marginBottom: '0.5em' }}>
+              <button 
+                onClick={() => setCurrentPage('home')}
+                style={{ 
+                  width: '100%', 
+                  textAlign: 'left', 
+                  padding: '0.8em',
+                  backgroundColor: currentPage === 'home' ? '#646cff' : 'transparent',
+                  color: currentPage === 'home' ? 'white' : 'inherit',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                ホーム
+              </button>
+            </li>
+            <li style={{ marginBottom: '0.5em' }}>
+              <button 
+                onClick={() => setCurrentPage('salary')}
+                style={{ 
+                  width: '100%', 
+                  textAlign: 'left', 
+                  padding: '0.8em',
+                  backgroundColor: currentPage === 'salary' ? '#646cff' : 'transparent',
+                  color: currentPage === 'salary' ? 'white' : 'inherit',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                給与収入
+              </button>
+            </li>
+            <li style={{ marginBottom: '0.5em' }}>
+              <button 
+                onClick={() => setCurrentPage('property')}
+                style={{ 
+                  width: '100%', 
+                  textAlign: 'left', 
+                  padding: '0.8em',
+                  backgroundColor: currentPage === 'property' ? '#646cff' : 'transparent',
+                  color: currentPage === 'property' ? 'white' : 'inherit',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                所有物件
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      
+      {/* メインコンテンツ */}
+      <div style={{ flex: 1, padding: '2em' }}>
+        <div>
+          <a href="https://vite.dev" target="_blank">
+            <img src={viteLogo} className="logo" alt="Vite logo" />
+          </a>
+          <a href="https://react.dev" target="_blank">
+            <img src={reactLogo} className="logo react" alt="React logo" />
+          </a>
+        </div>
+        <h1>Vite + React</h1>
+        {renderContent()}
+        <p className="read-the-docs">
+          Click on the Vite and React logos to learn more
+        </p>
+      </div>
+    </div>
   )
 }
 
