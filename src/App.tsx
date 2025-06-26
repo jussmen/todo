@@ -72,6 +72,10 @@ function App() {
     }
   }
 
+  const handleLogout = async () => {
+    await supabaseClient.auth.signOut()
+  }
+
   if (!user) {
     return <Login />
   }
@@ -87,6 +91,12 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
+      <div style={{ marginBottom: '1em' }}>
+        <span>ようこそ、{user.email}さん</span>
+        <button onClick={handleLogout} style={{ marginLeft: '1em' }}>
+          ログアウト
+        </button>
+      </div>
       <div className="card">
         <form onSubmit={handleAdd} style={{ marginBottom: '1em' }}>
           <input
