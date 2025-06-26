@@ -181,7 +181,7 @@ function App() {
                   style={{ 
                     padding: '0.8em 1.5em',
                     backgroundColor: currentPage === 'home' ? '#646cff' : 'transparent',
-                    color: currentPage === 'home' ? 'white' : 'inherit',
+                    color: currentPage === 'home' ? 'white' : '#333',
                     border: 'none',
                     borderRadius: '4px',
                     cursor: 'pointer'
@@ -196,7 +196,7 @@ function App() {
                   style={{ 
                     padding: '0.8em 1.5em',
                     backgroundColor: currentPage === 'salary' ? '#646cff' : 'transparent',
-                    color: currentPage === 'salary' ? 'white' : 'inherit',
+                    color: currentPage === 'salary' ? 'white' : '#333',
                     border: 'none',
                     borderRadius: '4px',
                     cursor: 'pointer'
@@ -211,7 +211,7 @@ function App() {
                   style={{ 
                     padding: '0.8em 1.5em',
                     backgroundColor: currentPage === 'property' ? '#646cff' : 'transparent',
-                    color: currentPage === 'property' ? 'white' : 'inherit',
+                    color: currentPage === 'property' ? 'white' : '#333',
                     border: 'none',
                     borderRadius: '4px',
                     cursor: 'pointer'
