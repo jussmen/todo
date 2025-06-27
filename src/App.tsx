@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import { TodoApi } from './utils/todoApi'
+import type { Todo } from './types/Todo'
 import { supabaseClient } from './lib/supabaseClient'
 import Login from './Login'
 import Salary from './Salary'
 
 function App() {
-  const [setTodos] = useState<Todo[]>([])
-  const [setLoading] = useState(true)
+  const [todos, setTodos] = useState<Todo[]>([])
+  const [loading, setLoading] = useState(true)
   const [input, setInput] = useState('')
-  const [setAdding] = useState(false)
+  const [adding, setAdding] = useState(false)
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [user, setUser] = useState<any>(null)
   const [currentPage, setCurrentPage] = useState<'home' | 'salary' | 'property'>('home')
