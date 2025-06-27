@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import { TodoApi } from './utils/todoApi'
-import type { Todo } from './types/Todo'
 import { supabaseClient } from './lib/supabaseClient'
 import Login from './Login'
 import Salary from './Salary'
