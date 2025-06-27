@@ -4,6 +4,7 @@ import { TodoApi } from './utils/todoApi'
 import type { Todo } from './types/Todo'
 import { supabaseClient } from './lib/supabaseClient'
 import Login from './Login'
+import Salary from './Salary'
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([])
@@ -78,63 +79,9 @@ function App() {
   const renderContent = () => {
     switch (currentPage) {
       case 'home':
-        return (
-          <div className="card">
-            <form onSubmit={handleAdd} style={{ marginBottom: '1em' }}>
-              <input
-                type="text"
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                placeholder="新しいタスクを入力"
-                disabled={adding}
-                style={{ marginRight: '0.5em', padding: '0.8em', width: '80%', fontSize: '1em' }}
-              />
-              <button type="submit" disabled={adding || !input.trim()}>
-                {adding ? '追加中...' : '追加'}
-              </button>
-            </form>
-            <h2>タスク一覧</h2>
-            {loading ? (
-              <p>読み込み中...</p>
-            ) : todos.length === 0 ? (
-              <p>タスクがありません</p>
-            ) : (
-              <form>
-                <ul style={{ textAlign: 'left' }}>
-                  {todos.map((todo) => (
-                    <li key={todo.id}>
-                      <label>
-                        <input
-                          type="radio"
-                          name="selectedTodo"
-                          value={todo.id}
-                          checked={selectedId === todo.id}
-                          onChange={() => setSelectedId(todo.id)}
-                        />
-                        {todo.text} {todo.done ? '✅' : ''}
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  type="button"
-                  onClick={handleDelete}
-                  disabled={selectedId === null}
-                  style={{ marginTop: '1em' }}
-                >
-                  削除
-                </button>
-              </form>
-            )}
-          </div>
-        )
+        return <TodoList user={user} />
       case 'salary':
-        return (
-          <div className="card">
-            <h2>給与収入</h2>
-            <p>給与収入の管理機能は準備中です。</p>
-          </div>
-        )
+        return <Salary />
       case 'property':
         return (
           <div className="card">
