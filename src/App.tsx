@@ -6,10 +6,10 @@ import Login from './Login'
 import Salary from './Salary'
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([])
-  const [loading, setLoading] = useState(true)
+  const [setTodos] = useState<Todo[]>([])
+  const [setLoading] = useState(true)
   const [input, setInput] = useState('')
-  const [adding, setAdding] = useState(false)
+  const [setAdding] = useState(false)
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [user, setUser] = useState<any>(null)
   const [currentPage, setCurrentPage] = useState<'home' | 'salary' | 'property'>('home')
