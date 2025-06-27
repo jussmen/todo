@@ -79,7 +79,56 @@ function App() {
   const renderContent = () => {
     switch (currentPage) {
       case 'home':
-        return <TodoList user={user} />
+        return (
+          <div className="card">
+            <form onSubmit={handleAdd} style={{ marginBottom: '1em' }}>
+              <input
+                type="text"
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                placeholder="新しいタスクを入力"
+                disabled={adding}
+                style={{ marginRight: '0.5em', padding: '0.8em', width: '80%', fontSize: '1em' }}
+              />
+              <button type="submit" disabled={adding || !input.trim()}>
+                {adding ? '追加中...' : '追加'}
+              </button>
+            </form>
+            <h2>タスク一覧</h2>
+            {loading ? (
+              <p>読み込み中...</p>
+            ) : todos.length === 0 ? (
+              <p>タスクがありません</p>
+            ) : (
+              <form>
+                <ul style={{ textAlign: 'left' }}>
+                  {todos.map((todo) => (
+                    <li key={todo.id}>
+                      <label>
+                        <input
+                          type="radio"
+                          name="selectedTodo"
+                          value={todo.id}
+                          checked={selectedId === todo.id}
+                          onChange={() => setSelectedId(todo.id)}
+                        />
+                        {todo.text} {todo.done ? '✅' : ''}
+                      </label>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  disabled={selectedId === null}
+                  style={{ marginTop: '1em' }}
+                >
+                  削除
+                </button>
+              </form>
+            )}
+          </div>
+        )
       case 'salary':
         return <Salary />
       case 'property':
