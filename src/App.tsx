@@ -81,16 +81,16 @@ function App() {
       case 'home':
         return (
           <div className="card">
-            <form onSubmit={handleAdd} style={{ marginBottom: '1em' }}>
+            <form onSubmit={handleAdd} className="task-form">
               <input
                 type="text"
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 placeholder="新しいタスクを入力"
                 disabled={adding}
-                style={{ marginRight: '0.5em', padding: '0.8em', width: '80%', fontSize: '1em' }}
+                className="task-input"
               />
-              <button type="submit" disabled={adding || !input.trim()}>
+              <button type="submit" disabled={adding || !input.trim()} className="task-button">
                 {adding ? '追加中...' : '追加'}
               </button>
             </form>
@@ -101,9 +101,9 @@ function App() {
               <p>タスクがありません</p>
             ) : (
               <form>
-                <ul style={{ textAlign: 'left' }}>
+                <ul className="task-list">
                   {todos.map((todo) => (
-                    <li key={todo.id}>
+                    <li key={todo.id} className="task-item">
                       <label>
                         <input
                           type="radio"
@@ -121,7 +121,7 @@ function App() {
                   type="button"
                   onClick={handleDelete}
                   disabled={selectedId === null}
-                  style={{ marginTop: '1em' }}
+                  className="delete-button"
                 >
                   削除
                 </button>
@@ -150,38 +150,15 @@ function App() {
   return (
     <>
       {/* 上部メニューバー */}
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        background: '#fff',
-        borderBottom: '1px solid #ddd',
-        zIndex: 1000,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.03)'
-      }}>
-        <div style={{
-          maxWidth: '80vw',
-          margin: '0 auto',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '1em 0',
-        }}>
+      <div className="menu-bar">
+        <div className="menu-container">
           {/* メニュー項目 */}
           <nav>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', gap: '1em' }}>
+            <ul className="menu-nav">
               <li>
                 <button 
                   onClick={() => setCurrentPage('home')}
-                  style={{ 
-                    padding: '0.8em 1.5em',
-                    backgroundColor: currentPage === 'home' ? '#646cff' : 'transparent',
-                    color: currentPage === 'home' ? 'white' : '#333',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
-                  }}
+                  className={`menu-button ${currentPage === 'home' ? 'active' : ''}`}
                 >
                   ホーム
                 </button>
@@ -189,14 +166,7 @@ function App() {
               <li>
                 <button 
                   onClick={() => setCurrentPage('salary')}
-                  style={{ 
-                    padding: '0.8em 1.5em',
-                    backgroundColor: currentPage === 'salary' ? '#646cff' : 'transparent',
-                    color: currentPage === 'salary' ? 'white' : '#333',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
-                  }}
+                  className={`menu-button ${currentPage === 'salary' ? 'active' : ''}`}
                 >
                   給与収入
                 </button>
@@ -204,38 +174,24 @@ function App() {
               <li>
                 <button 
                   onClick={() => setCurrentPage('property')}
-                  style={{ 
-                    padding: '0.8em 1.5em',
-                    backgroundColor: currentPage === 'property' ? '#646cff' : 'transparent',
-                    color: currentPage === 'property' ? 'white' : '#333',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
-                  }}
+                  className={`menu-button ${currentPage === 'property' ? 'active' : ''}`}
                 >
                   所有物件
                 </button>
               </li>
             </ul>
           </nav>
-          <div>
+          <div className="user-info">
             <span>ようこそ、{user.email}さん</span>
-            <button onClick={handleLogout} style={{ marginLeft: '1em', fontSize: '0.8em' }}>
+            <button onClick={handleLogout} className="logout-button">
               ログアウト
             </button>
           </div>
         </div>
       </div>
+      
       {/* メインコンテンツ */}
-      <div style={{
-        background: '#fff',
-        maxWidth: '80%',
-        margin: '6em auto 0 auto',
-        padding: '2em',
-        minHeight: '80vh',
-        boxShadow: '0 2px 16px rgba(0,0,0,0.04)',
-        borderRadius: '8px',
-      }}>
+      <div className="main-content">
         {renderContent()}
       </div>
     </>
