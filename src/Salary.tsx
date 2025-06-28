@@ -209,7 +209,8 @@ function Salary() {
                 border: '1px solid #ddd',
                 borderRadius: '4px',
                 boxSizing: 'border-box',
-                backgroundColor: '#f5f5f5'
+                backgroundColor: '#f5f5f5',
+                color: '#333'
               }}
               readOnly
             />
