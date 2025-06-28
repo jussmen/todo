@@ -128,7 +128,7 @@ function Salary() {
   const handleInputChange = (field: keyof SalaryData, value: string | number) => {
     setSalaryData(prev => ({
       ...prev,
-      [field]: typeof value === 'string' ? parseFloat(value) || 0 : value
+      [field]: typeof value === 'string' ? (parseFloat(value) || 0) * 10000 : value * 10000
     }))
   }
 
@@ -146,63 +146,72 @@ function Salary() {
       <form onSubmit={handleSubmit} style={{ textAlign: 'left', maxWidth: '500px', margin: '0 auto 2em auto' }}>
         <div style={{ marginBottom: '1.5em' }}>
           <label style={{ display: 'block', marginBottom: '0.5em', fontWeight: 'bold' }}>
-            収入（円）
+            収入
           </label>
-          <input
-            type="number"
-            value={salaryData.income || ''}
-            onChange={(e) => handleInputChange('income', e.target.value)}
-            placeholder="例: 5000000"
-            style={{
-              width: '100%',
-              padding: '0.8em',
-              fontSize: '1em',
-              border: '1px solid #ddd',
-              borderRadius: '4px',
-              boxSizing: 'border-box'
-            }}
-            required
-          />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <input
+              type="number"
+              value={salaryData.income ? salaryData.income / 10000 : ''}
+              onChange={(e) => handleInputChange('income', e.target.value)}
+              placeholder="例: 500"
+              style={{
+                flex: 1,
+                padding: '0.8em',
+                fontSize: '1em',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                boxSizing: 'border-box'
+              }}
+              required
+            />
+            <span style={{ marginLeft: '0.5em', fontSize: '1em', color: '#333' }}>万円</span>
+          </div>
         </div>
 
         <div style={{ marginBottom: '1.5em' }}>
           <label style={{ display: 'block', marginBottom: '0.5em', fontWeight: 'bold' }}>
-            所得控除（円）
+            所得控除
           </label>
-          <input
-            type="number"
-            value={salaryData.deduction || ''}
-            onChange={(e) => handleInputChange('deduction', e.target.value)}
-            placeholder="例: 200000"
-            style={{
-              width: '100%',
-              padding: '0.8em',
-              fontSize: '1em',
-              border: '1px solid #ddd',
-              borderRadius: '4px',
-              boxSizing: 'border-box'
-            }}
-          />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <input
+              type="number"
+              value={salaryData.deduction ? salaryData.deduction / 10000 : ''}
+              onChange={(e) => handleInputChange('deduction', e.target.value)}
+              placeholder="例: 20"
+              style={{
+                flex: 1,
+                padding: '0.8em',
+                fontSize: '1em',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                boxSizing: 'border-box'
+              }}
+            />
+            <span style={{ marginLeft: '0.5em', fontSize: '1em', color: '#333' }}>万円</span>
+          </div>
         </div>
 
         <div style={{ marginBottom: '1.5em' }}>
           <label style={{ display: 'block', marginBottom: '0.5em', fontWeight: 'bold' }}>
-            税額控除（円）
+            税額控除
           </label>
-          <input
-            type="number"
-            value={salaryData.tax_credit || ''}
-            onChange={(e) => handleInputChange('tax_credit', e.target.value)}
-            placeholder="例: 50000"
-            style={{
-              width: '100%',
-              padding: '0.8em',
-              fontSize: '1em',
-              border: '1px solid #ddd',
-              borderRadius: '4px',
-              boxSizing: 'border-box'
-            }}
-          />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <input
+              type="number"
+              value={salaryData.tax_credit ? salaryData.tax_credit / 10000 : ''}
+              onChange={(e) => handleInputChange('tax_credit', e.target.value)}
+              placeholder="例: 5"
+              style={{
+                flex: 1,
+                padding: '0.8em',
+                fontSize: '1em',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                boxSizing: 'border-box'
+              }}
+            />
+            <span style={{ marginLeft: '0.5em', fontSize: '1em', color: '#333' }}>万円</span>
+          </div>
         </div>
 
         <button
@@ -234,23 +243,23 @@ function Salary() {
       }}>
         <h3 style={{ marginTop: 0, color: '#333' }}>税金計算結果</h3>
         
-        <div style={{ fontSize: '1.1em', lineHeight: '2' }}>
+        <div style={{ fontSize: '1.1em', lineHeight: '2', color: '#1976d2' }}>
           <div style={{ marginBottom: '1em' }}>
             <strong>{salaryData.income.toLocaleString()}円</strong> - <strong>{taxCalculation.employmentDeduction.toLocaleString()}円</strong> = <strong>{taxCalculation.employmentIncome.toLocaleString()}円</strong>
             <br />
-            <span style={{ color: '#666', fontSize: '0.9em' }}>（収入 - 給与所得控除 = 所得金額）</span>
+            <span style={{ color: '#1976d2', fontSize: '0.9em' }}>（収入 - 給与所得控除 = 所得金額）</span>
           </div>
           
           <div style={{ marginBottom: '1em' }}>
             <strong>{taxCalculation.employmentIncome.toLocaleString()}円</strong> - <strong>{salaryData.deduction.toLocaleString()}円</strong> = <strong>{taxCalculation.taxableIncome.toLocaleString()}円</strong>
             <br />
-            <span style={{ color: '#666', fontSize: '0.9em' }}>（所得金額 - 所得控除 = 課税所得金額）</span>
+            <span style={{ color: '#1976d2', fontSize: '0.9em' }}>（所得金額 - 所得控除 = 課税所得金額）</span>
           </div>
           
           <div style={{ marginBottom: '1em' }}>
             <strong>{taxCalculation.taxableIncome.toLocaleString()}円</strong> × <strong>{taxCalculation.taxRate}%</strong> = <strong>{taxCalculation.taxAmount.toLocaleString()}円</strong>
             <br />
-            <span style={{ color: '#666', fontSize: '0.9em' }}>（課税所得金額 × 税率 = 税額）</span>
+            <span style={{ color: '#1976d2', fontSize: '0.9em' }}>（課税所得金額 × 税率 = 税額）</span>
           </div>
           
           <div style={{ 
@@ -262,7 +271,7 @@ function Salary() {
           }}>
             <strong>{taxCalculation.taxAmount.toLocaleString()}円</strong> - <strong>{salaryData.tax_credit.toLocaleString()}円</strong> = <strong style={{ color: '#d32f2f', fontSize: '1.2em' }}>{taxCalculation.finalTax.toLocaleString()}円</strong>
             <br />
-            <span style={{ color: '#666', fontSize: '0.9em' }}>（税額 - 税額控除 = 納める税金の額）</span>
+            <span style={{ color: '#1976d2', fontSize: '0.9em' }}>（税額 - 税額控除 = 納める税金の額）</span>
           </div>
         </div>
       </div>
