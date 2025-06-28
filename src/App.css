@@ -73,7 +73,7 @@
 .menu-button {
   padding: 0.8em 1.5em;
   background-color: transparent;
-  color: inherit;
+  color: #333;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -97,6 +97,7 @@
   display: flex;
   align-items: center;
   gap: 1em;
+  color: #333;
 }
 
 .logout-button {
@@ -107,6 +108,7 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  color: #333;
 }
 
 .logout-button:hover {
@@ -122,6 +124,7 @@
   min-height: 80vh;
   box-shadow: 0 2px 16px rgba(0,0,0,0.04);
   border-radius: 8px;
+  color: #333;
 }
 
 /* タスク管理 */
@@ -136,6 +139,7 @@
   font-size: 1em;
   border: 1px solid #ddd;
   border-radius: 4px;
+  color: #333;
 }
 
 .task-button {
@@ -157,10 +161,12 @@
   text-align: left;
   list-style: none;
   padding: 0;
+  color: #333;
 }
 
 .task-item {
   margin-bottom: 0.5em;
+  color: #333;
 }
 
 .task-item label {
@@ -168,6 +174,7 @@
   align-items: center;
   gap: 0.5em;
   cursor: pointer;
+  color: #333;
 }
 
 .task-item input[type="radio"] {
