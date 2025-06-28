@@ -215,7 +215,7 @@ function Salary() {
             />
             <span style={{ marginLeft: '0.5em', fontSize: '1em', color: '#333' }}>万円</span>
           </div>
-          <small style={{ color: '#666', fontSize: '0.8em' }}>
+          <small style={{ color: '#333', fontSize: '0.8em' }}>
             収入の約19.45%（健康保険料・厚生年金・雇用保険の概算）
           </small>
         </div>
@@ -241,7 +241,7 @@ function Salary() {
             />
             <span style={{ marginLeft: '0.5em', fontSize: '1em', color: '#333' }}>万円</span>
           </div>
-          <small style={{ color: '#666', fontSize: '0.8em' }}>
+          <small style={{ color: '#333', fontSize: '0.8em' }}>
             生命保険料控除、医療費控除、住宅ローン控除など
           </small>
         </div>
