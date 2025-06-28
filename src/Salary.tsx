@@ -62,6 +62,9 @@ function Salary() {
     const taxAmount = taxableIncome * taxRate
     const finalTax = taxAmount - salaryData.tax_credit
 
+    // 住民税の計算（簡易版：所得税の約10%）
+    const residenceTax = Math.round(taxableIncome * 0.1)
+
     return {
       employmentDeduction,
       employmentIncome,
@@ -69,7 +72,9 @@ function Salary() {
       taxableIncome,
       taxRate: taxRate * 100,
       taxAmount,
-      finalTax: Math.max(0, finalTax)
+      finalTax: Math.max(0, finalTax),
+      residenceTax,
+      totalTax: Math.max(0, finalTax) + residenceTax
     }
   }
 
@@ -252,7 +257,7 @@ function Salary() {
 
       {/* 計算結果表示 */}
       <div className="calculation-container">
-        <h3 className="calculation-title">税金計算結果</h3>
+        <h3 className="calculation-title">所得税計算結果</h3>
         
         <div className="calculation-content">
           <div className="calculation-step">
@@ -276,7 +281,19 @@ function Salary() {
           <div className="final-result">
             <strong>{taxCalculation.taxAmount.toLocaleString()}円</strong> - <strong>{salaryData.tax_credit.toLocaleString()}円</strong> = <strong className="final-tax-amount">{taxCalculation.finalTax.toLocaleString()}円</strong>
             <br />
-            <span className="calculation-step-text">（税額 - 税額控除 = 納める税金の額）</span>
+            <span className="calculation-step-text">（税額 - 税額控除 = 納める所得税の額）</span>
+          </div>
+
+          <div className="calculation-step">
+            <strong>{taxCalculation.taxableIncome.toLocaleString()}円</strong> × <strong>10%</strong> = <strong>{taxCalculation.residenceTax.toLocaleString()}円</strong>
+            <br />
+            <span className="calculation-step-text">（課税所得金額 × 住民税率 = 納める住民税の額）</span>
+          </div>
+
+          <div className="final-result" style={{ background: '#fff3e0', border: '2px solid #ff9800' }}>
+            <strong>{taxCalculation.finalTax.toLocaleString()}円</strong> + <strong>{taxCalculation.residenceTax.toLocaleString()}円</strong> = <strong style={{ color: '#e65100', fontSize: '1.2em' }}>{taxCalculation.totalTax.toLocaleString()}円</strong>
+            <br />
+            <span className="calculation-step-text">（納める所得税の額 + 納める住民税の額 = 納める税金の額）</span>
           </div>
         </div>
       </div>
