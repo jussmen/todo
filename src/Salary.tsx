@@ -5,7 +5,8 @@ interface SalaryData {
   id?: number
   user_id: string
   income: number
-  deduction: number
+  social_insurance_deduction: number
+  other_deduction: number
   tax_credit: number
   created_at?: string
 }
@@ -14,7 +15,8 @@ function Salary() {
   const [salaryData, setSalaryData] = useState<SalaryData>({
     user_id: '',
     income: 0,
-    deduction: 0,
+    social_insurance_deduction: 0,
+    other_deduction: 0,
     tax_credit: 0
   })
   const [loading, setLoading] = useState(false)
@@ -28,6 +30,13 @@ function Salary() {
     if (income <= 6600000) return income * 0.2 + 540000
     if (income <= 8500000) return income * 0.1 + 1200000
     return 1950000
+  }
+
+  // 社会保険料控除の概算計算（簡易版）
+  const calculateSocialInsuranceDeduction = (income: number): number => {
+    // 健康保険料（約10%）、厚生年金保険料（約9.15%）、雇用保険料（約0.3%）の合計
+    // 実際の計算は複雑なので、概算として収入の約19.45%を使用
+    return Math.round(income * 0.1945)
   }
 
   // 税率の計算（簡易版）
@@ -46,7 +55,8 @@ function Salary() {
     const income = salaryData.income
     const employmentDeduction = calculateEmploymentIncomeDeduction(income)
     const employmentIncome = income - employmentDeduction
-    const taxableIncome = employmentIncome - salaryData.deduction
+    const totalDeduction = salaryData.social_insurance_deduction + salaryData.other_deduction
+    const taxableIncome = employmentIncome - totalDeduction
     const taxRate = calculateTaxRate(taxableIncome)
     const taxAmount = taxableIncome * taxRate
     const finalTax = taxAmount - salaryData.tax_credit
@@ -54,11 +64,24 @@ function Salary() {
     return {
       employmentDeduction,
       employmentIncome,
+      totalDeduction,
       taxableIncome,
       taxRate: taxRate * 100,
       taxAmount,
       finalTax: Math.max(0, finalTax)
     }
+  }
+
+  // 収入が変更された時に社会保険料控除を自動計算
+  const handleIncomeChange = (value: string) => {
+    const incomeInYen = (parseFloat(value) || 0) * 10000
+    const socialInsuranceDeduction = calculateSocialInsuranceDeduction(incomeInYen)
+    
+    setSalaryData(prev => ({
+      ...prev,
+      income: incomeInYen,
+      social_insurance_deduction: socialInsuranceDeduction
+    }))
   }
 
   useEffect(() => {
@@ -104,7 +127,8 @@ function Salary() {
           .from('salary_data')
           .update({
             income: salaryData.income,
-            deduction: salaryData.deduction,
+            social_insurance_deduction: salaryData.social_insurance_deduction,
+            other_deduction: salaryData.other_deduction,
             tax_credit: salaryData.tax_credit
           })
           .eq('id', salaryData.id)
@@ -152,7 +176,7 @@ function Salary() {
             <input
               type="number"
               value={salaryData.income ? salaryData.income / 10000 : ''}
-              onChange={(e) => handleInputChange('income', e.target.value)}
+              onChange={(e) => handleIncomeChange(e.target.value)}
               placeholder="例: 500"
               style={{
                 flex: 1,
@@ -170,13 +194,41 @@ function Salary() {
 
         <div style={{ marginBottom: '1.5em' }}>
           <label style={{ display: 'block', marginBottom: '0.5em', fontWeight: 'bold' }}>
-            所得控除
+            社会保険料控除（自動計算）
           </label>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <input
               type="number"
-              value={salaryData.deduction ? salaryData.deduction / 10000 : ''}
-              onChange={(e) => handleInputChange('deduction', e.target.value)}
+              value={salaryData.social_insurance_deduction ? salaryData.social_insurance_deduction / 10000 : ''}
+              onChange={(e) => handleInputChange('social_insurance_deduction', e.target.value)}
+              placeholder="自動計算"
+              style={{
+                flex: 1,
+                padding: '0.8em',
+                fontSize: '1em',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                boxSizing: 'border-box',
+                backgroundColor: '#f5f5f5'
+              }}
+              readOnly
+            />
+            <span style={{ marginLeft: '0.5em', fontSize: '1em', color: '#333' }}>万円</span>
+          </div>
+          <small style={{ color: '#666', fontSize: '0.8em' }}>
+            収入の約19.45%（健康保険料・厚生年金・雇用保険の概算）
+          </small>
+        </div>
+
+        <div style={{ marginBottom: '1.5em' }}>
+          <label style={{ display: 'block', marginBottom: '0.5em', fontWeight: 'bold' }}>
+            その他の控除
+          </label>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <input
+              type="number"
+              value={salaryData.other_deduction ? salaryData.other_deduction / 10000 : ''}
+              onChange={(e) => handleInputChange('other_deduction', e.target.value)}
               placeholder="例: 20"
               style={{
                 flex: 1,
@@ -189,6 +241,9 @@ function Salary() {
             />
             <span style={{ marginLeft: '0.5em', fontSize: '1em', color: '#333' }}>万円</span>
           </div>
+          <small style={{ color: '#666', fontSize: '0.8em' }}>
+            生命保険料控除、医療費控除、住宅ローン控除など
+          </small>
         </div>
 
         <div style={{ marginBottom: '1.5em' }}>
@@ -251,7 +306,7 @@ function Salary() {
           </div>
           
           <div style={{ marginBottom: '1em' }}>
-            <strong>{taxCalculation.employmentIncome.toLocaleString()}円</strong> - <strong>{salaryData.deduction.toLocaleString()}円</strong> = <strong>{taxCalculation.taxableIncome.toLocaleString()}円</strong>
+            <strong>{taxCalculation.employmentIncome.toLocaleString()}円</strong> - <strong>{taxCalculation.totalDeduction.toLocaleString()}円</strong> = <strong>{taxCalculation.taxableIncome.toLocaleString()}円</strong>
             <br />
             <span style={{ color: '#1976d2', fontSize: '0.9em' }}>（所得金額 - 所得控除 = 課税所得金額）</span>
           </div>
